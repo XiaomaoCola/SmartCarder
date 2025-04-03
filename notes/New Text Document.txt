@@ -1,0 +1,9 @@
+sudo filebeat test output
+
+sudo systemctl start elasticsearch
+
+sudo systemctl restart elasticsearch
+
+sudo systemctl status elasticsearch
+
+curl -X GET http://localhost:9200
