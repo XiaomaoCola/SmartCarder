@@ -1,35 +1,86 @@
-# SSH Brute-force Attack Detection with Elastic Stack
+# SmartCarder – ローカル版スマート名刺管理システム（AI駆動）
 
-## 📌 Project Overview
-This project demonstrates how to detect SSH brute-force login attempts using Filebeat, Elasticsearch, and Kibana.
+## プロジェクト概要
 
-## 🔧 Stack Used
-- Filebeat 8.13
-- Elasticsearch 8.13
-- Kibana 8.13
-- Ubuntu 22.04
-- Hydra (for attack simulation)
+SmartCarder は、現代企業向けのローカル型スマート名刺デジタル化ソリューションです。最先端のコンピュータビジョン技術と大規模言語モデル（LLM）によるインテリジェント解析エンジンを融合し、高価なハードウェアや外部依存は不要、軽量な導入と高いセキュリティを実現します。
 
-## 🔄 Architecture
-auth.log → Filebeat → Elasticsearch → Kibana
+**主な強み：**
 
-## 🚀 Steps
-1. Install and configure Filebeat
-2. Set up Elasticsearch & Kibana (via Docker)
-3. Simulate brute-force login with Hydra
-4. Visualize login failures in Kibana
-5. Create alert rule for failed logins
+- **Sansan に匹敵するAI名刺認識および構造化抽出能力**、完全ローカル化で、プライバシーデータを外部クラウドへアップロード不要
+- **専用スキャナーは不要**、スマートフォンで撮影または画像をアップロードするだけで、高精度な名刺解析を即座に実現
+- **名刺の主要情報をインテリジェントに抽出**、自動的に構造化してデータベースに書き込み、企業既存システムとの連携も可能
+- **コンピュータビジョンと生成系AI技術を活用**、日本式および国際的な名刺テンプレートに幅広く対応、従来型OCRを大きく上回る認識率
+- **全工程ローカル処理で、データプライバシーとセキュリティも万全**、Sansanのような出張設置や月額高額サブスクリプションも不要
 
-## 📸 Screenshots
-- Login failure logs
-- Kibana dashboard
-- Alert rules
+SmartCarder は、日本企業および個人ユーザーに対し、**ハイエンド・俊敏・カスタマイズ可能**な企業向け名刺管理体験を提供します。
 
-## 🧠 Notes
-- Elasticsearch must have basic auth enabled
-- SSH logs are in `/var/log/auth.log` on Ubuntu
-- Tune rule to avoid false positives
+---
 
-## 🧪 Future Ideas
-- Auto-block IPs with iptables
-- GeoIP tracking of attacker IP
+## ファイル構成
+
+```
+SmartCarder/
+│
+├── Class/
+│   ├── extract_text.py    # OCR+AIのコアモジュール
+│   └── local_llm.py       # ローカルLLM通信モジュール
+│
+├── main.py               # サンプルメインプログラム
+```
+
+---
+
+## クイックスタート
+
+1. ローカル大規模言語モデルAPIサービスの準備  
+    `local_llm.py` はデフォルトで `http://localhost:11434/api/generate` を指します。該当APIが正常に応答できることを確認してください。
+2. 名刺画像を用意する  
+    例：`C:\Users\xiaomao\Desktop\meishi.jpg` に保存
+3. メインプログラムを実行
+
+```bash
+python main.py
+```
+
+**出力例：**
+
+```json
+{
+  "name": "山田太郎",
+  "company": "株式会社サンプル",
+  "email": "taro@example.co.jp",
+  "address": "東京都千代田区1-2-3",
+  "telephone": "03-1234-5678"
+}
+```
+
+---
+
+## 主なコード説明
+
+- Class/extract_text.py
+    - `OCRModule.extract_text(img_path)`：画像の全テキストをOCRで抽出（リストで返却）
+    - `OCRModule.extract_business_card_info(img_path)`：名刺情報を構造化したJSONで返却（ローカル大規模言語モデルでインテリジェント抽出）
+- Class/local_llm.py
+    - `LocalLLM`：ローカル大規模言語モデルAPIとの通信を担当
+- main.py
+    - サンプルの呼び出し手順
+
+---
+
+## 将来的な拡張機能
+
+SmartCarder は名刺のインテリジェント認識と管理にとどまりません。先進的なAI技術、コンピュータビジョンおよび大規模言語モデル（LLM）アルゴリズムを組み合わせ、簡単な設定や二次開発を施すだけで、様々な企業文書の自動認識とデジタル化シーンにシームレスに対応可能です。例としては以下の通り：
+
+- **各種契約書・合意書**（労働契約書、業務委託契約書、売買契約書 等）
+- **請求書、領収書、見積書、発注書などのビジネス書類**
+- **社員証、勤怠カード、業務台帳**
+- **会社規程、社内規則、稟議書（申請書）、各種フォーム**
+- **財務諸表、会議記録、往復書簡、技術ホワイトペーパーなど多様な資料**
+
+すべてのファイルは**AIによって自動的に主要情報を抽出し、リアルタイムでデータベースに登録**。企業の資料管理をデジタル化・インテリジェント化・自動化します。
+
+SmartCarder は、企業が真の「全面的なデジタルオフィス」や「スマートドキュメント管理」を実現できるようにサポートします。  
+これからは、面倒な紙書類の整理や資料検索に悩まされることなく、次のような状態を実現できます——
+
+> **「書類をスキャンするだけで、データベース登録。企業情報資産をワンストップで管理。」**

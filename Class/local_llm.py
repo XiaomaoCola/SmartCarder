@@ -1,7 +1,7 @@
 import requests
 
 class LocalLLM:
-    def __init__(self, url="http://localhost:11434/api/generate", model="gemma3:4b", timeout=30):
+    def __init__(self, url="http://192.168.50.130:11434/api/generate", model="gemma3:4b", timeout=30):
         self.url = url
         self.model = model
         self.timeout = timeout
